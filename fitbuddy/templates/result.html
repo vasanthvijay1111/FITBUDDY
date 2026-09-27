@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3f5ee">
+    <title>Your Workout Plan - FitBuddy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #18211d;
+            --muted: #65716a;
+            --paper: #f3f5ee;
+            --white: #fff;
+            --line: #dce1d8;
+            --lime: #d9f16a;
+            --orange: #d95f3d;
+            --font-body: "DM Sans", "Segoe UI", sans-serif;
+            --font-display: "Barlow Condensed", Impact, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-width: 0;
+            min-height: 100vh;
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-body);
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .site-header {
+            display: flex;
+            width: min(100% - 64px, 1280px);
+            min-height: 82px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 0 auto;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 32px;
+            aspect-ratio: 1;
+            place-items: center;
+            background: var(--lime);
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .brand-name span {
+            color: var(--orange);
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-links a,
+        .eyebrow,
+        .section-kicker,
+        .user-label,
+        .plan-tag {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        .header-links a {
+            text-decoration: none;
+        }
+
+        .header-links a:hover,
+        .header-links a:focus-visible,
+        .brand:focus-visible {
+            color: var(--orange);
+        }
+
+        .result-shell {
+            width: min(100% - 64px, 1280px);
+            margin: 38px auto 64px;
+        }
+
+        .eyebrow,
+        .section-kicker {
+            margin: 0 0 9px;
+            color: var(--orange);
+        }
+
+        .page-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 26px;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: var(--ink);
+        }
+
+        h1 {
+            margin-bottom: 0;
+            font-family: var(--font-display);
+            font-size: 58px;
+            font-weight: 700;
+            letter-spacing: 0;
+            line-height: 0.94;
+            text-transform: uppercase;
+        }
+
+        .plan-tag {
+            display: inline-flex;
+            min-height: 33px;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            padding: 0 11px;
+            background: #e8eedb;
+            color: #3d5832;
+        }
+
+        .plan-tag::before {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #718d3f;
+            content: "";
+        }
+
+        .alert {
+            margin: 0 0 20px;
+            padding: 13px 16px;
+            border-left: 3px solid #718d3f;
+            background: #e8eedb;
+            color: #30452c;
+            font-size: 13px;
+        }
+
+        .alert-error {
+            border-color: var(--orange);
+            background: #fae9e3;
+            color: #723a2c;
+        }
+
+        .user-strip {
+            display: grid;
+            grid-template-columns: 1.3fr repeat(5, 1fr);
+            margin-bottom: 36px;
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .user-fact {
+            min-width: 0;
+            padding: 15px 16px 16px 0;
+        }
+
+        .user-fact + .user-fact {
+            padding-left: 16px;
+            border-left: 1px solid var(--line);
+        }
+
+        .user-label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--muted);
+        }
+
+        .user-value {
+            display: block;
+            overflow-wrap: anywhere;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 310px;
+            align-items: start;
+            gap: 48px;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 15px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-family: var(--font-display);
+            font-size: 34px;
+            font-weight: 600;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .section-total {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .day-list {
+            border-top: 1px solid var(--line);
+        }
+
+        .day-card {
+            border-bottom: 1px solid var(--line);
+            background: var(--white);
+        }
+
+        .day-card summary {
+            display: grid;
+            min-height: 66px;
+            grid-template-columns: 38px minmax(0, 1fr) 24px;
+            align-items: center;
+            gap: 13px;
+            padding: 9px 15px;
+            cursor: pointer;
+            list-style: none;
+        }
+
+        .day-card summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .day-number {
+            display: grid;
+            width: 34px;
+            aspect-ratio: 1;
+            place-items: center;
+            background: var(--paper);
+            color: var(--muted);
+            font-family: var(--font-display);
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .day-card[open] .day-number {
+            background: var(--lime);
+            color: var(--ink);
+        }
+
+        .day-title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .day-toggle {
+            color: var(--orange);
+            font-size: 22px;
+            font-weight: 400;
+            text-align: center;
+            transition: transform 150ms ease;
+        }
+
+        .day-card[open] .day-toggle {
+            transform: rotate(45deg);
+        }
+
+        .day-card summary:focus-visible,
+        .header-links a:focus-visible,
+        .brand:focus-visible,
+        button:focus-visible {
+            outline: 3px solid #718d3f;
+            outline-offset: 3px;
+        }
+
+        .day-body {
+            padding: 0 52px 20px 66px;
+        }
+
+        .day-label {
+            margin: 11px 0 6px;
+            color: var(--muted);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .exercise-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 8px 0;
+            border-bottom: 1px solid #edf0e9;
+            font-size: 13px;
+            line-height: 1.45;
+        }
+
+        .exercise-name {
+            font-weight: 600;
+        }
+
+        .exercise-dose {
+            flex: 0 0 auto;
+            color: var(--muted);
+            text-align: right;
+        }
+
+        .day-note {
+            display: grid;
+            grid-template-columns: minmax(90px, 0.36fr) minmax(0, 1fr);
+            gap: 10px;
+            margin: 10px 0 0;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .day-note strong {
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .plain-note {
+            margin: 10px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .plan-feedback {
+            margin-top: 16px;
+            padding: 13px 15px;
+            border-left: 3px solid var(--orange);
+            background: #fff4ef;
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .plan-fallback {
+            overflow-wrap: anywhere;
+            white-space: pre-wrap;
+            font: 13px/1.7 var(--font-body);
+        }
+
+        .sidebar {
+            display: grid;
+            gap: 24px;
+        }
+
+        .nutrition-panel {
+            padding: 22px;
+            background: #20302a;
+            color: var(--white);
+        }
+
+        .nutrition-panel .section-kicker {
+            color: var(--lime);
+        }
+
+        .nutrition-panel h2,
+        .feedback-panel h2 {
+            margin: 0 0 12px;
+            font-family: var(--font-display);
+            font-size: 27px;
+            font-weight: 600;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+
+        .nutrition-panel h2 {
+            color: var(--white);
+        }
+
+        .nutrition-panel p:last-child {
+            margin-bottom: 0;
+            color: #e1e9df;
+            font-size: 13px;
+            line-height: 1.65;
+        }
+
+        .feedback-panel {
+            padding-top: 22px;
+            border-top: 1px solid var(--line);
+        }
+
+        .feedback-panel .section-kicker {
+            margin-bottom: 7px;
+        }
+
+        .feedback-panel h2 {
+            font-size: 25px;
+        }
+
+        .feedback-description {
+            margin-bottom: 14px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        textarea {
+            display: block;
+            width: 100%;
+            min-height: 108px;
+            resize: vertical;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: 3px;
+            outline: none;
+            background: var(--white);
+            color: var(--ink);
+            font: 13px/1.5 var(--font-body);
+        }
+
+        textarea:focus {
+            border-color: #718d3f;
+            box-shadow: 0 0 0 3px rgb(217 241 106 / 35%);
+        }
+
+        .submit-button {
+            display: flex;
+            width: 100%;
+            min-height: 48px;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            padding: 0 14px;
+            border: 0;
+            background: var(--orange);
+            color: var(--white);
+            cursor: pointer;
+            font: 700 13px var(--font-body);
+        }
+
+        .submit-button:hover {
+            background: #bf4f31;
+        }
+
+        .submit-arrow {
+            font-size: 19px;
+            font-weight: 400;
+        }
+
+        .bottom-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 30px;
+            color: var(--ink);
+            font-size: 12px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .bottom-link:hover {
+            color: var(--orange);
+        }
+
+        @media (max-width: 900px) {
+            .content-grid {
+                grid-template-columns: minmax(0, 1fr) 270px;
+                gap: 28px;
+            }
+
+            .user-strip {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .user-fact:nth-child(4) {
+                padding-left: 0;
+                border-left: 0;
+            }
+
+            .user-fact:nth-child(n + 4) {
+                border-top: 1px solid var(--line);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .site-header,
+            .result-shell {
+                width: min(100% - 36px, 600px);
+            }
+
+            .site-header {
+                min-height: 72px;
+            }
+
+            .result-shell {
+                margin-top: 30px;
+            }
+
+            .content-grid {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 34px;
+            }
+
+            .sidebar {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                align-items: start;
+            }
+
+            .feedback-panel {
+                padding-top: 0;
+                border-top: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-header,
+            .result-shell {
+                width: calc(100% - 32px);
+            }
+
+            .site-header {
+                min-height: 66px;
+            }
+
+            .brand {
+                gap: 8px;
+                font-size: 16px;
+            }
+
+            .brand-mark {
+                width: 29px;
+                font-size: 15px;
+            }
+
+            .header-links {
+                gap: 13px;
+            }
+
+            .header-links a {
+                font-size: 9px;
+            }
+
+            .result-shell {
+                margin-top: 25px;
+            }
+
+            .page-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 13px;
+                margin-bottom: 20px;
+            }
+
+            h1 {
+                font-size: 47px;
+            }
+
+            .plan-tag {
+                min-height: 28px;
+                margin: 0;
+                font-size: 9px;
+            }
+
+            .user-strip {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                margin-bottom: 29px;
+            }
+
+            .user-fact,
+            .user-fact + .user-fact {
+                padding: 12px 10px 12px 0;
+                border-left: 0;
+            }
+
+            .user-fact:nth-child(even) {
+                padding-left: 12px;
+                border-left: 1px solid var(--line);
+            }
+
+            .user-fact:nth-child(n + 3) {
+                border-top: 1px solid var(--line);
+            }
+
+            .user-label {
+                font-size: 9px;
+            }
+
+            .user-value {
+                font-size: 13px;
+            }
+
+            .content-grid {
+                gap: 28px;
+            }
+
+            .section-heading h2 {
+                font-size: 30px;
+            }
+
+            .day-card summary {
+                min-height: 62px;
+                grid-template-columns: 34px minmax(0, 1fr) 20px;
+                gap: 10px;
+                padding: 8px 10px;
+            }
+
+            .day-number {
+                width: 31px;
+            }
+
+            .day-title {
+                font-size: 12px;
+            }
+
+            .day-body {
+                padding: 0 12px 17px 54px;
+            }
+
+            .exercise-row {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 2px;
+                font-size: 12px;
+            }
+
+            .exercise-dose {
+                text-align: left;
+            }
+
+            .day-note {
+                grid-template-columns: 1fr;
+                gap: 2px;
+            }
+
+            .sidebar {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 22px;
+            }
+
+            .feedback-panel {
+                padding-top: 21px;
+                border-top: 1px solid var(--line);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="/" aria-label="FitBuddy home">
+            <span class="brand-mark" aria-hidden="true">FB</span>
+            <span class="brand-name">fitbuddy<span>.</span></span>
+        </a>
+        <nav class="header-links" aria-label="Main navigation">
+            <a href="/view-all-users">Saved plans</a>
+            <a href="/">New plan</a>
+        </nav>
+    </header>
+
+    <main class="result-shell">
+        <div class="page-heading">
+            <div>
+                <p class="eyebrow">Your next seven days</p>
+                <h1>Your week,<br>in motion.</h1>
+            </div>
+            <span class="plan-tag">Locally generated plan</span>
+        </div>
+
+        {% if success_message %}
+        <div class="alert" role="status">{{ success_message }}</div>
+        {% endif %}
+        {% if error %}
+        <div class="alert alert-error" role="alert">{{ error }}</div>
+        {% endif %}
+
+        {% if username or user_id %}
+        <section class="user-strip" aria-label="User information">
+            <div class="user-fact"><span class="user-label">Athlete</span><span class="user-value">{{ username }}</span></div>
+            <div class="user-fact"><span class="user-label">User ID</span><span class="user-value">{{ user_id }}</span></div>
+            <div class="user-fact"><span class="user-label">Age</span><span class="user-value">{{ age }}</span></div>
+            <div class="user-fact"><span class="user-label">Weight</span><span class="user-value">{{ weight }} kg</span></div>
+            <div class="user-fact"><span class="user-label">Goal</span><span class="user-value">{{ goal }}</span></div>
+            <div class="user-fact"><span class="user-label">Intensity</span><span class="user-value">{{ intensity }}</span></div>
+        </section>
+        {% endif %}
+
+        <div class="content-grid">
+            <section aria-labelledby="workout-title">
+                <div class="section-heading">
+                    <div>
+                        <p class="section-kicker">The schedule</p>
+                        <h2 id="workout-title">Training plan</h2>
+                    </div>
+                    <span class="section-total">7 days</span>
+                </div>
+
+                {% set plan_sections = workout_plan.split('\n\n') if workout_plan else [] %}
+                {% set day_count = namespace(value=0) %}
+                <div class="day-list">
+                    {% for section in plan_sections %}
+                        {% set lines = section.split('\n') %}
+                        {% if lines and lines[0].startswith('Day ') %}
+                            {% set day_count.value = day_count.value + 1 %}
+                            <details class="day-card" {% if day_count.value == 1 %}open{% endif %}>
+                                <summary>
+                                    <span class="day-number">{{ "%02d"|format(day_count.value) }}</span>
+                                    <span class="day-title">{{ lines[0] }}</span>
+                                    <span class="day-toggle" aria-hidden="true">+</span>
+                                </summary>
+                                <div class="day-body">
+                                    {% for line in lines[1:] %}
+                                        {% if line == 'Main workout:' %}
+                                            <p class="day-label">{{ line }}</p>
+                                        {% elif line.startswith('- ') %}
+                                            {% set exercise_parts = line[2:].split(': ', 1) %}
+                                            <div class="exercise-row">
+                                                <span class="exercise-name">{{ exercise_parts[0] }}</span>
+                                                {% if exercise_parts|length > 1 %}<span class="exercise-dose">{{ exercise_parts[1] }}</span>{% endif %}
+                                            </div>
+                                        {% elif ': ' in line %}
+                                            {% set note_parts = line.split(': ', 1) %}
+                                            <p class="day-note"><strong>{{ note_parts[0] }}</strong><span>{{ note_parts[1] }}</span></p>
+                                        {% elif line %}
+                                            <p class="plain-note">{{ line }}</p>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </details>
+                        {% elif lines and lines[0].startswith('Feedback:') %}
+                            <p class="plan-feedback">{{ section }}</p>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% if day_count.value == 0 and workout_plan %}
+                <pre class="plan-fallback">{{ workout_plan }}</pre>
+                {% endif %}
+            </section>
+
+            <aside class="sidebar">
+                <section class="nutrition-panel" aria-labelledby="nutrition-title">
+                    <p class="section-kicker">Recovery fuel</p>
+                    <h2 id="nutrition-title">Nutrition tip</h2>
+                    <p>{{ nutrition_tip }}</p>
+                </section>
+
+                {% if user_id %}
+                <section class="feedback-panel" aria-labelledby="feedback-title">
+                    <p class="section-kicker">Make it yours</p>
+                    <h2 id="feedback-title">Adjust your plan</h2>
+                    <p class="feedback-description">Tell us what you would like changed for your next version.</p>
+                    <form action="/submit-feedback" method="POST">
+                        <input type="hidden" name="user_id" value="{{ user_id }}">
+                        <label class="user-label" for="feedback">Your feedback</label>
+                        <textarea id="feedback" name="feedback" required placeholder="For example, make the workouts easier or add more rest."></textarea>
+                        <button class="submit-button" type="submit">
+                            <span>Update plan</span>
+                            <span class="submit-arrow" aria-hidden="true">&#8594;</span>
+                        </button>
+                    </form>
+                </section>
+                {% endif %}
+            </aside>
+        </div>
+
+        <a class="bottom-link" href="/">&#8592; <span>Generate another plan</span></a>
+    </main>
+</body>
+</html>

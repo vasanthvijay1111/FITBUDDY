@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3f5ee">
+    <title>FitBuddy - Build Your Training Week</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #18211d;
+            --muted: #65716a;
+            --paper: #f3f5ee;
+            --white: #fff;
+            --line: #dce1d8;
+            --lime: #d9f16a;
+            --orange: #d95f3d;
+            --font-body: "DM Sans", "Segoe UI", sans-serif;
+            --font-display: "Barlow Condensed", Impact, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-body);
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .site-header {
+            width: min(100% - 64px, 1360px);
+            min-height: 88px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 11px;
+            color: var(--ink);
+            font-size: 19px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 34px;
+            aspect-ratio: 1;
+            place-items: center;
+            background: var(--lime);
+            color: var(--ink);
+            font-family: var(--font-display);
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .brand-name span {
+            color: var(--orange);
+        }
+
+        .header-mode,
+        .dashboard-link,
+        .eyebrow,
+        .step-label,
+        .field-label,
+        .visual-topline,
+        .week-mark {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        .header-mode {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--muted);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #71924c;
+            box-shadow: 0 0 0 4px #e4ebd9;
+        }
+
+        .dashboard-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ink);
+            text-decoration: none;
+        }
+
+        .dashboard-link:hover,
+        .dashboard-link:focus-visible {
+            color: var(--orange);
+        }
+
+        .dashboard-arrow {
+            color: var(--orange);
+            font-size: 17px;
+            line-height: 1;
+        }
+
+        .page-shell {
+            display: grid;
+            grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+            width: min(100% - 64px, 1360px);
+            min-height: min(720px, calc(100vh - 112px));
+            margin: 0 auto 32px;
+            background: var(--white);
+            box-shadow: 0 18px 60px rgb(24 33 29 / 8%);
+        }
+
+        .visual-panel {
+            position: relative;
+            display: flex;
+            min-height: 680px;
+            overflow: hidden;
+            align-items: flex-end;
+            padding: 36px 42px 42px;
+            background: #344239;
+            color: var(--white);
+            isolation: isolate;
+        }
+
+        .visual-image,
+        .visual-shade {
+            position: absolute;
+            z-index: -1;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .visual-image {
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .visual-shade {
+            background: linear-gradient(180deg, rgb(16 24 20 / 20%) 0%, rgb(16 24 20 / 12%) 32%, rgb(16 24 20 / 83%) 100%);
+        }
+
+        .visual-topline {
+            position: absolute;
+            top: 34px;
+            right: 36px;
+            left: 36px;
+            display: flex;
+            justify-content: space-between;
+            color: rgb(255 255 255 / 83%);
+        }
+
+        .visual-topline span:last-child {
+            padding: 7px 10px;
+            background: var(--lime);
+            color: var(--ink);
+        }
+
+        .visual-copy {
+            max-width: 490px;
+        }
+
+        .eyebrow {
+            margin: 0 0 13px;
+            color: var(--orange);
+        }
+
+        .visual-panel .eyebrow {
+            color: var(--lime);
+        }
+
+        .visual-copy h1,
+        .form-panel h2 {
+            margin: 0;
+            font-family: var(--font-display);
+            font-weight: 700;
+            letter-spacing: 0;
+            line-height: 0.94;
+            text-transform: uppercase;
+        }
+
+        .visual-copy h1 {
+            max-width: 470px;
+            font-size: 72px;
+        }
+
+        .visual-description {
+            margin: 17px 0 0;
+            color: rgb(255 255 255 / 84%);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .week-mark {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 29px;
+            color: rgb(255 255 255 / 82%);
+            line-height: 1.35;
+        }
+
+        .week-number {
+            color: var(--lime);
+            font-family: var(--font-display);
+            font-size: 47px;
+            line-height: 0.9;
+        }
+
+        .form-panel {
+            display: flex;
+            align-items: center;
+            padding: 58px clamp(36px, 6vw, 86px);
+        }
+
+        .form-content {
+            width: 100%;
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
+        .step-label {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 16px;
+            color: var(--muted);
+        }
+
+        .step-number {
+            color: var(--orange);
+            font-family: var(--font-display);
+            font-size: 18px;
+        }
+
+        .step-rule {
+            width: 33px;
+            height: 1px;
+            background: var(--line);
+        }
+
+        .form-panel h2 {
+            font-size: 48px;
+        }
+
+        .form-intro {
+            margin: 9px 0 28px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 19px 16px;
+        }
+
+        .form-group {
+            min-width: 0;
+        }
+
+        .span-all {
+            grid-column: 1 / -1;
+        }
+
+        .field-label,
+        .intensity-field legend {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--ink);
+        }
+
+        .field-control {
+            display: block;
+            width: 100%;
+            height: 48px;
+            padding: 0 13px;
+            border: 1px solid var(--line);
+            border-radius: 3px;
+            outline: none;
+            background: #fbfcf9;
+            color: var(--ink);
+            font: 500 14px var(--font-body);
+            transition: border-color 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+        }
+
+        .field-control::placeholder {
+            color: #929b95;
+            opacity: 1;
+        }
+
+        .field-control:focus {
+            border-color: #718d3f;
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgb(217 241 106 / 35%);
+        }
+
+        .goal-field {
+            min-width: 0;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        .goal-options {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px;
+        }
+
+        .goal-option {
+            position: relative;
+            display: flex;
+            min-height: 48px;
+            align-items: center;
+            padding: 0 13px;
+            border: 1px solid var(--line);
+            border-radius: 3px;
+            background: #fbfcf9;
+            color: var(--ink);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: border-color 150ms ease, background-color 150ms ease;
+        }
+
+        .goal-option input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+
+        .goal-option:has(input:checked) {
+            border-color: #91a84e;
+            background: #edf4ce;
+        }
+
+        .goal-option:has(input:focus-visible) {
+            outline: 3px solid var(--orange);
+            outline-offset: 2px;
+            z-index: 1;
+        }
+
+        .intensity-field {
+            min-width: 0;
+            margin: 0;
+            padding: 0;
+            border: 0;
+        }
+
+        .intensity-options {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            border: 1px solid var(--line);
+            background: #fbfcf9;
+        }
+
+        .intensity-option {
+            position: relative;
+            display: grid;
+            min-height: 60px;
+            align-content: center;
+            gap: 3px;
+            padding: 9px 12px;
+            cursor: pointer;
+            transition: background-color 150ms ease, color 150ms ease;
+        }
+
+        .intensity-option + .intensity-option {
+            border-left: 1px solid var(--line);
+        }
+
+        .intensity-option input {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            clip-path: inset(50%);
+            white-space: nowrap;
+        }
+
+        .intensity-option:has(input:checked) {
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        .intensity-option:has(input:focus-visible) {
+            outline: 3px solid var(--orange);
+            outline-offset: 2px;
+            z-index: 1;
+        }
+
+        .intensity-name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .intensity-note {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .intensity-option:has(input:checked) .intensity-note {
+            color: #d1d9d1;
+        }
+
+        .submit-button {
+            display: flex;
+            width: 100%;
+            min-height: 54px;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 23px;
+            padding: 0 18px;
+            border: 0;
+            background: var(--orange);
+            color: var(--white);
+            cursor: pointer;
+            font: 700 14px var(--font-body);
+            transition: background-color 150ms ease, transform 150ms ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-1px);
+            background: #bf4f31;
+        }
+
+        .submit-button:focus-visible,
+        .dashboard-link:focus-visible,
+        .brand:focus-visible {
+            outline: 3px solid #718d3f;
+            outline-offset: 4px;
+        }
+
+        .submit-arrow {
+            font-size: 21px;
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .form-footnote {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            margin: 14px 0 0;
+            color: var(--muted);
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+        .footnote-mark {
+            flex: 0 0 auto;
+            color: #718d3f;
+            font-size: 14px;
+            line-height: 1.1;
+        }
+
+        @media (max-width: 960px) {
+            .page-shell {
+                grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+            }
+
+            .visual-panel {
+                padding: 30px;
+            }
+
+            .visual-copy h1 {
+                font-size: 60px;
+            }
+
+            .form-panel {
+                padding: 48px 34px;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .site-header {
+                width: min(100% - 36px, 600px);
+                min-height: 72px;
+            }
+
+            .header-mode {
+                display: none;
+            }
+
+            .page-shell {
+                display: block;
+                width: min(100% - 36px, 600px);
+                margin-bottom: 24px;
+            }
+
+            .visual-panel {
+                min-height: 0;
+                aspect-ratio: 1.8 / 1;
+                padding: 24px;
+            }
+
+            .visual-topline {
+                top: 18px;
+                right: 20px;
+                left: 20px;
+                font-size: 10px;
+            }
+
+            .visual-copy h1 {
+                font-size: 48px;
+            }
+
+            .visual-copy .eyebrow {
+                margin-bottom: 7px;
+            }
+
+            .visual-description {
+                margin-top: 8px;
+                font-size: 13px;
+            }
+
+            .week-mark {
+                position: absolute;
+                right: 20px;
+                bottom: 24px;
+                gap: 7px;
+                font-size: 9px;
+            }
+
+            .week-number {
+                font-size: 34px;
+            }
+
+            .form-panel {
+                padding: 36px 28px 32px;
+            }
+
+            .form-panel h2 {
+                font-size: 43px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .site-header {
+                width: calc(100% - 32px);
+                min-height: 66px;
+            }
+
+            .brand {
+                font-size: 17px;
+            }
+
+            .dashboard-link {
+                gap: 5px;
+                font-size: 10px;
+            }
+
+            .page-shell {
+                width: calc(100% - 32px);
+            }
+
+            .visual-panel {
+                min-height: 290px;
+                aspect-ratio: auto;
+                padding: 20px;
+            }
+
+            .visual-copy h1 {
+                font-size: 38px;
+            }
+
+            .visual-copy .eyebrow {
+                max-width: 190px;
+                font-size: 9px;
+            }
+
+            .visual-description {
+                max-width: 190px;
+                font-size: 12px;
+            }
+
+            .week-mark {
+                position: static;
+                margin-top: 12px;
+            }
+
+            .form-panel {
+                padding: 31px 20px 26px;
+            }
+
+            .form-panel h2 {
+                font-size: 40px;
+            }
+
+            .form-intro {
+                margin-bottom: 23px;
+            }
+
+            .form-grid {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 17px;
+            }
+
+            .span-all {
+                grid-column: auto;
+            }
+
+            .intensity-option {
+                padding: 8px;
+            }
+
+            .intensity-name {
+                font-size: 12px;
+            }
+
+            .intensity-note {
+                font-size: 10px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <a class="brand" href="/" aria-label="FitBuddy home">
+            <span class="brand-mark" aria-hidden="true">FB</span>
+            <span class="brand-name">fitbuddy<span>.</span></span>
+        </a>
+        <div class="header-mode"><span class="status-dot" aria-hidden="true"></span> Local plan builder</div>
+        <a class="dashboard-link" href="/view-all-users">Saved plans <span class="dashboard-arrow" aria-hidden="true">&#8599;</span></a>
+    </header>
+
+    <main class="page-shell">
+        <section class="visual-panel" aria-label="Build a personalized training plan">
+            <img class="visual-image" src="/static/images/gym.jpg" alt="Training space with gym equipment">
+            <div class="visual-shade" aria-hidden="true"></div>
+            <div class="visual-topline"><span>FITBUDDY / 01</span><span>NO API KEY NEEDED</span></div>
+            <div class="visual-copy">
+                <p class="eyebrow">Your next session starts here</p>
+                <h1>Build strength.<br>Find your rhythm.</h1>
+                <p class="visual-description">One week of movement, shaped around your goal.</p>
+                <div class="week-mark"><span class="week-number">07</span><span>DAY PLAN<br>MADE FOR YOU</span></div>
+            </div>
+        </section>
+
+        <section class="form-panel" aria-labelledby="form-title">
+            <div class="form-content">
+                <div class="step-label"><span class="step-number">01</span><span class="step-rule" aria-hidden="true"></span><span>Your details</span></div>
+                <h2 id="form-title">Let's get moving.</h2>
+                <p class="form-intro">A few details will help shape a week that fits you.</p>
+
+                <form action="/generate-plan" method="POST">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="field-label" for="username">Name</label>
+                            <input class="field-control" type="text" id="username" name="username" required autocomplete="name" placeholder="Your name">
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label" for="user_id">User ID</label>
+                            <input class="field-control" type="number" id="user_id" name="user_id" min="1" required inputmode="numeric" placeholder="Unique number">
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label" for="age">Age</label>
+                            <input class="field-control" type="number" id="age" name="age" min="1" max="120" required inputmode="numeric" placeholder="Years">
+                        </div>
+                        <div class="form-group">
+                            <label class="field-label" for="weight">Weight <span aria-hidden="true">(kg)</span></label>
+                            <input class="field-control" type="number" id="weight" name="weight" min="0.1" step="0.1" required inputmode="decimal" placeholder="For example, 70.0">
+                        </div>
+                        <fieldset class="goal-field span-all">
+                            <legend class="field-label">Fitness goal</legend>
+                            <div class="goal-options">
+                                <label class="goal-option" for="goal-weight-loss">
+                                    <input type="radio" id="goal-weight-loss" name="goal" value="Weight loss" required>
+                                    <span>Weight loss</span>
+                                </label>
+                                <label class="goal-option" for="goal-muscle-gain">
+                                    <input type="radio" id="goal-muscle-gain" name="goal" value="Muscle gain">
+                                    <span>Muscle gain</span>
+                                </label>
+                                <label class="goal-option" for="goal-general-fitness">
+                                    <input type="radio" id="goal-general-fitness" name="goal" value="General fitness" checked>
+                                    <span>General fitness</span>
+                                </label>
+                                <label class="goal-option" for="goal-endurance">
+                                    <input type="radio" id="goal-endurance" name="goal" value="Endurance">
+                                    <span>Endurance</span>
+                                </label>
+                            </div>
+                        </fieldset>
+                        <fieldset class="intensity-field span-all">
+                            <legend class="field-label">Training intensity</legend>
+                            <div class="intensity-options">
+                                <label class="intensity-option" for="intensity-low">
+                                    <input type="radio" id="intensity-low" name="intensity" value="Low" required>
+                                    <span class="intensity-name">Low</span>
+                                    <span class="intensity-note">Ease in</span>
+                                </label>
+                                <label class="intensity-option" for="intensity-medium">
+                                    <input type="radio" id="intensity-medium" name="intensity" value="Medium" checked>
+                                    <span class="intensity-name">Medium</span>
+                                    <span class="intensity-note">Steady pace</span>
+                                </label>
+                                <label class="intensity-option" for="intensity-high">
+                                    <input type="radio" id="intensity-high" name="intensity" value="High">
+                                    <span class="intensity-name">High</span>
+                                    <span class="intensity-note">Push yourself</span>
+                                </label>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <button class="submit-button" type="submit">
+                        <span>Generate my week</span>
+                        <span class="submit-arrow" aria-hidden="true">&#8594;</span>
+                    </button>
+                    <p class="form-footnote"><span class="footnote-mark" aria-hidden="true">&#10003;</span><span>Your plan is generated locally. No external AI service or API key is required.</span></p>
+                </form>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
